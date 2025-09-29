@@ -46,10 +46,12 @@ document.addEventListener('keydown', (event) => {
 let result = document.querySelector('.js-result');
 let moves = document.querySelector('.js-moves');
 
-
 function playGame(playerMove) {
   const computerMove = pickComputerMove();
-  moves.innerHTML = `${playerMove} vs ${computerMove}`;
+  moves.innerHTML = `You
+  <img src="images/${playerMove}-emoji.png" class="move-icon">
+  Computer <img src="images/${computerMove}-emoji.png" class="move-icon">
+  `;
 
   if((computerMove === "rock" && playerMove === "paper") || (computerMove === "scissors" && playerMove === "rock") || (computerMove === "paper" && playerMove === "scissors") ){
     result.innerHTML = 'You win';
