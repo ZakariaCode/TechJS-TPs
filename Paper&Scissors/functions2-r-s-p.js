@@ -36,15 +36,23 @@ document.addEventListener('keydown', (event) => {
   }
 
 })
-  /*
-  Add an event listener
-  if the user presses the key r => play rock
-  if the user presses the key p => play paper
-  if the user presses the key s => play scissors
-  */
 
 let result = document.querySelector('.js-result');
 let moves = document.querySelector('.js-moves');
+let autoPlay = document.querySelector('.autoplay-button');
+
+let autoPlaying = false;
+let idIntervall;
+
+autoPlay.addEventListener('click', () => {
+  if (!autoPlaying) {
+    idIntervall = setInterval(() => playGame(pickComputerMove()), 2000);
+    autoPlaying = true;
+  } else {
+    clearInterval(idIntervall);
+    autoPlaying = false;
+  }
+});
 
 function playGame(playerMove) {
   const computerMove = pickComputerMove();
@@ -53,28 +61,26 @@ function playGame(playerMove) {
   Computer <img src="images/${computerMove}-emoji.png" class="move-icon">
   `;
 
-  if((computerMove === "rock" && playerMove === "paper") || (computerMove === "scissors" && playerMove === "rock") || (computerMove === "paper" && playerMove === "scissors") ){
+  if (
+    (computerMove === "rock" && playerMove === "paper") ||
+    (computerMove === "scissors" && playerMove === "rock") ||
+    (computerMove === "paper" && playerMove === "scissors")
+  ) {
     result.innerHTML = 'You win';
-   score.wins += 1;
-  }
-  else if((computerMove === "paper" && playerMove === "rock") || (computerMove === "rock" && playerMove === "scissors") || (computerMove === "scissors" && playerMove === "paper")){
+    score.wins += 1;
+  } else if (
+    (computerMove === "paper" && playerMove === "rock") ||
+    (computerMove === "rock" && playerMove === "scissors") ||
+    (computerMove === "scissors" && playerMove === "paper")
+  ) {
     result.innerHTML = 'You lose';
     score.losses += 1;
-  
-  }
-  else{
+  } else {
     result.innerHTML = 'Tie';
     score.ties += 1;
   }
   localStorage.setItem('score', JSON.stringify(score));
   updateScoreElement();
- 
-
-
-  // calculate result
-  // update the score and store it using localStorage.setItem
-  // show the new score and the updated images using "document.querySelector"
-
 }
 
 function updateScoreElement() {
@@ -96,4 +102,4 @@ function pickComputerMove() {
   }
 
   return computerMove;
-} 
+}

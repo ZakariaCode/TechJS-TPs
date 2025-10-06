@@ -8,7 +8,7 @@ function renderTodoList() {
   todoList.forEach((todo, index) => {
     const { name, dueDate } = todo;
     const html = `
-      <div style="display:flex; flex-direction: row; ">${name}  -  ${dueDate} <button class="js-delete-button" data-index="${index}" style="color: red; margin-left:20px; background-color : white border: none">Delete</button></div>`;
+      <div style="display:flex; flex-direction: row; ">${name}      ${dueDate} <button class="js-delete-button" data-index="${index}" style="color: red; margin-left:20px; background-color : white border: none">Delete</button></div>`;
     todoListHTML += html;
   });
 
