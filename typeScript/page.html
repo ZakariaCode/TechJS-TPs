@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+  <h1 class="text-3xl font-bold mb-6 text-center">Book Tracker</h1>
+
+  <!-- Formulaire pour ajouter un livre -->
+  <div class="max-w-xl mx-auto bg-white p-6 rounded shadow mb-6">
+    <h2 class="text-xl font-semibold mb-4">Add a New Book</h2>
+    <form id="bookForm" class="space-y-4">
+      <input type="text" id="title" placeholder="Title" class="w-full p-2 border rounded" required>
+      <input type="text" id="author" placeholder="Author" class="w-full p-2 border rounded" required>
+      <input type="number" id="pages" placeholder="Number of pages" class="w-full p-2 border rounded" required>
+      <input type="number" id="price" placeholder="Price" class="w-full p-2 border rounded">
+      <input type="number" id="pagesRead" placeholder="Pages read" class="w-full p-2 border rounded">
+      
+      <select id="status" class="w-full p-2 border rounded" required>
+        <option value="">Select status</option>
+        <option value="Read">Read</option>
+        <option value="Re-read">Re-read</option>
+        <option value="DNF">DNF</option>
+        <option value="Currently reading">Currently reading</option>
+        <option value="Returned Unread">Returned Unread</option>
+        <option value="Want to read">Want to read</option>
+      </select>
+
+      <select id="format" class="w-full p-2 border rounded" required>
+        <option value="">Select format</option>
+        <option value="Print">Print</option>
+        <option value="PDF">PDF</option>
+        <option value="Ebook">Ebook</option>
+        <option value="AudioBook">AudioBook</option>
+      </select>
+
+      <input type="text" id="suggestedBy" placeholder="Suggested by" class="w-full p-2 border rounded">
+      <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Add Book</button>
+    </form>
+  </div>
+
+  <!-- Liste des livres -->
+  <div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-semibold mb-4">Books</h2>
+    <div id="booksList" class="space-y-4"></div>
+  </div>
+
+<script>
+  const API_URL = "http://localhost:3000/books";
+
+  // Récupérer tous les livres
+  async function fetchBooks() {
+    const res = await fetch(API_URL);
+    const books = await res.json();
+    displayBooks(books);
+  }
+
+  // Afficher les livres
+  function displayBooks(books) {
+    const container = document.getElementById("booksList");
+    container.innerHTML = "";
+    books.forEach(book => {
+      const percent = Math.round((book.pagesRead / book.pages) * 100);
+      const div = document.createElement("div");
+      div.className = "p-4 border rounded flex justify-between items-center";
+      div.innerHTML = `
+        <div>
+          <p><strong>${book.title}</strong> by ${book.author}</p>
+          <p>Status: ${book.status} | Format: ${book.format} | Pages: ${book.pages} | Read: ${book.pagesRead} (${percent}%)</p>
+          <p>Suggested by: ${book.suggestedBy} | Price: $${book.price}</p>
+        </div>
+        <button onclick="deleteBook('${book._id}')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  // Ajouter un livre
+  document.getElementById("bookForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const bookData = {
+      title: document.getElementById("title").value,
+      author: document.getElementById("author").value,
+      pages: Number(document.getElementById("pages").value),
+      price: Number(document.getElementById("price").value) || 0,
+      pagesRead: Number(document.getElementById("pagesRead").value) || 0,
+      status: document.getElementById("status").value,
+      format: document.getElementById("format").value,
+      suggestedBy: document.getElementById("suggestedBy").value,
+      finished: false
+    };
+
+    await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bookData)
+    });
+
+    document.getElementById("bookForm").reset();
+    fetchBooks();
+  });
+
+  // Supprimer un livre
+  async function deleteBook(id) {
+    await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+    fetchBooks();
+  }
+
+  // Initial fetch
+  fetchBooks();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "pokemongame",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "pokemone": "./game.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "inquire": "^0.4.8",
+    "inquirer": "^12.10.0",
+    "yargs": "^18.0.0"
+  }
+}

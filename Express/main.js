@@ -2,7 +2,7 @@ import mongoose, { Model } from "mongoose";
 const { Schema } = mongoose;
 import session from "express-session";
 import express from "express";
-import bookRouter from "./book.js";
+import bookRouter from "./bookDb.js";
 const app = express();
 app.use(express.json());
 app.use(
@@ -24,8 +24,6 @@ const personSchema = new Schema({
 });
 const personModel = mongoose.model("person", personSchema);
 
-// await personModel.create({username : "zakaria",password :"zakaria",tel : "0607353645"});
-// console.log(await personModel.findById({_id:"6908682743cebbda72ea6926"}));
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
