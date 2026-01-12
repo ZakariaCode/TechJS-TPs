@@ -1,0 +1,9 @@
+<h1>Liste des livres</h1>
+
+<div>
+  @for (book of books; track book.name) {
+    @if(book.year >= 2020) {
+      <h3>{{ book.name | transforming}} - {{ book.year }}</h3>
+    }
+  }
+</div>

@@ -1,0 +1,22 @@
+{
+  "books": [
+    {
+      "title": "La boite a merveille",
+      "author": "John Doe",
+      "year": 2023,
+      "id": "1"
+    },
+    {
+      "id": "2",
+      "title": "TypeScript Guide",
+      "author": "Jane Smith",
+      "year": 2024
+    },
+    {
+      "id": "e19b",
+      "title": "t",
+      "author": "gg",
+      "year": 2004
+    }
+  ]
+}
